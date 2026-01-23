@@ -18,7 +18,8 @@
   const state = {
     isModalOpen: false,
     isMobileMenuOpen: false,
-    lastFocusedElement: null
+    lastFocusedElement: null,
+    activeModal: null
   };
   
   /**
@@ -43,6 +44,12 @@
     // Initialize modal
     initModal();
     
+    // Initialize Career Guidance
+    initCareerGuidance();
+    
+    // Initialize AI Assistant
+    initAIAssistant();
+    
     // Handle window resize
     initResizeHandler();
     
@@ -50,7 +57,7 @@
     initKeyboardShortcuts();
     
     // Log initialization
-    console.log('CodeCrest Hub initialized successfully 🚀');
+    console.log('🚀 CodeCrest Hub initialized successfully');
   }
   
   /**
@@ -166,9 +173,6 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-          } else {
-            // Remove class when element leaves viewport
-            entry.target.classList.remove('visible');
           }
         });
       },
@@ -222,6 +226,7 @@
       if (!modal || state.isModalOpen) return;
       
       state.isModalOpen = true;
+      state.activeModal = 'program';
       state.lastFocusedElement = document.activeElement;
       
       // Update modal content
@@ -249,8 +254,8 @@
       
       if (whatsappButton) {
         whatsappButton.textContent = 'Join WhatsApp Group';
-        whatsappButton.href = 'https://wa.me/2349131575084';
-        whatsappButton.onclick = null; // Remove any previous handlers
+        whatsappButton.href = 'https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6';
+        whatsappButton.onclick = null;
       }
       
       if (closeButton) {
@@ -294,7 +299,7 @@
     
     // Close modal on escape key
     document.addEventListener('keydown', (e) => {
-      if (state.isModalOpen && e.key === 'Escape') {
+      if (state.isModalOpen && e.key === 'Escape' && state.activeModal === 'program') {
         window.closeModal();
       }
     });
@@ -371,17 +376,14 @@
       
       // Escape key closes modals/menus
       if (e.key === 'Escape') {
-        if (state.isModalOpen) window.closeModal();
+        if (state.isModalOpen) {
+          if (state.activeModal === 'program') window.closeModal();
+          if (state.activeModal === 'career') window.closeCareerModal();
+        }
         if (state.isMobileMenuOpen) {
           const navToggle = document.querySelector('.nav-toggle');
           if (navToggle) navToggle.click();
         }
-      }
-      
-      // '/' key focuses search (if you add search later)
-      if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-        // Add search functionality here
       }
     });
   }
@@ -419,7 +421,7 @@
     
     element.addEventListener('keydown', handleTabKey);
     
-    // Cleanup function
+    // Return cleanup function
     return () => {
       element.removeEventListener('keydown', handleTabKey);
     };
@@ -430,9 +432,10 @@
    */
   window.closeModal = function() {
     const modal = document.getElementById('modal');
-    if (!modal || !state.isModalOpen) return;
+    if (!modal || !state.isModalOpen || state.activeModal !== 'program') return;
     
     state.isModalOpen = false;
+    state.activeModal = null;
     modal.classList.remove('active');
     document.body.style.overflow = '';
     
@@ -442,6 +445,479 @@
       state.lastFocusedElement = null;
     }
   };
+  
+  /**
+   * Initialize Career Guidance features
+   */
+  function initCareerGuidance() {
+    const registerBtn = document.getElementById('registerCareerBtn');
+    const careerModal = document.getElementById('careerModal');
+    const careerForm = document.getElementById('careerRegistrationForm');
+    const careerModalClose = careerModal?.querySelector('.modal-close');
+    
+    if (!registerBtn || !careerModal) return;
+    
+    // Open career modal
+    registerBtn.addEventListener('click', () => {
+      openCareerModal();
+    });
+    
+    // Career modal functionality
+    window.openCareerModal = function() {
+      if (state.isModalOpen) return;
+      
+      state.isModalOpen = true;
+      state.activeModal = 'career';
+      state.lastFocusedElement = document.activeElement;
+      
+      // Show career modal
+      careerModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Trap focus in modal
+      trapFocus(careerModal);
+      
+      // Focus first input
+      const firstInput = careerForm?.querySelector('input');
+      if (firstInput) firstInput.focus();
+    };
+    
+    // Close career modal
+    window.closeCareerModal = function() {
+      if (!state.isModalOpen || state.activeModal !== 'career') return;
+      
+      state.isModalOpen = false;
+      state.activeModal = null;
+      careerModal.classList.remove('active');
+      document.body.style.overflow = '';
+      
+      // Restore focus
+      if (state.lastFocusedElement) {
+        state.lastFocusedElement.focus();
+        state.lastFocusedElement = null;
+      }
+    };
+    
+    // Close modal buttons
+    if (careerModalClose) {
+      careerModalClose.addEventListener('click', window.closeCareerModal);
+    }
+    
+    // Close modal on background click
+    careerModal.addEventListener('click', (e) => {
+      if (e.target === careerModal) {
+        window.closeCareerModal();
+      }
+    });
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (state.isModalOpen && e.key === 'Escape' && careerModal.classList.contains('active')) {
+        window.closeCareerModal();
+      }
+    });
+    
+    // Handle career form submission
+    if (careerForm) {
+      careerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('careerName').value;
+        const email = document.getElementById('careerEmail').value;
+        const interest = document.getElementById('careerInterest').value;
+        const experience = document.getElementById('careerExperience').value;
+        
+        // Basic validation
+        if (!name || !email || !interest || !experience) {
+          alert('Please fill in all fields.');
+          return;
+        }
+        
+        // In a real application, you would send this data to your server
+        // For now, we'll just show a success message
+        alert(`Thank you ${name}! Your interest in the Career Guidance Program has been registered. We'll contact you at ${email} when registration opens.`);
+        
+        // Reset form
+        careerForm.reset();
+        
+        // Close modal
+        window.closeCareerModal();
+      });
+    }
+  }
+  
+  /**
+   * Initialize Floating AI Chat Widget
+   */
+  function initAIAssistant() {
+    const aiToggle = document.getElementById('aiWidgetToggle');
+    const aiContainer = document.getElementById('aiWidgetContainer');
+    const aiClose = document.getElementById('aiWidgetClose');
+    const aiMessages = document.getElementById('aiWidgetMessages');
+    const aiInput = document.getElementById('aiWidgetInput');
+    const aiSend = document.getElementById('aiWidgetSend');
+    const quickQuestions = document.querySelectorAll('.quick-question-btn');
+    const aiNotification = document.getElementById('aiNotification');
+    
+    if (!aiToggle || !aiContainer) return;
+    
+    let isWidgetOpen = false;
+    let unreadMessages = 1; // Initial welcome message
+    
+    // AI Responses database
+    const aiResponses = {
+      'career guidance': {
+        question: /career guidance|program details|what is the career|guidance program/i,
+        response: `The <strong>Career Guidance Program</strong> is a 1-hour intensive empowerment session designed for a maximum of 20 individuals. It focuses on:<br><br>
+        • Understanding in-demand tech skills<br>
+        • Navigating the tech industry landscape<br>
+        • Career path insights and progression strategies<br>
+        • Networking with fellow tech enthusiasts<br>
+        • Access to curated learning resources<br><br>
+        The program launches next month - register your interest now!`
+      },
+      'registration': {
+        question: /register|sign up|how to join|enroll|application/i,
+        response: `To register for the Career Guidance Program:<br><br>
+        1. Click the "Register Interest" button<br>
+        2. Fill in your details in the registration form<br>
+        3. We'll contact you when registration opens next month<br>
+        4. Limited to 20 spots per session - early registration is recommended!<br><br>
+        You can also join our <a href="https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6" target="_blank" style="color: #6c5ce7; font-weight: 600;">WhatsApp community</a> for updates.`
+      },
+      'tech skills': {
+        question: /tech skills|what should i learn|skills in demand|technical skills/i,
+        response: `Based on current industry trends, these are the most in-demand tech skills:<br><br>
+        <strong>High Demand:</strong><br>
+        • Web Development (JavaScript, React, Node.js)<br>
+        • Data Analysis & Visualization<br>
+        • Cloud Computing (AWS, Azure)<br>
+        • Cybersecurity Fundamentals<br><br>
+        <strong>Emerging Skills:</strong><br>
+        • AI & Machine Learning basics<br>
+        • Blockchain fundamentals<br>
+        • DevOps practices<br><br>
+        Our Career Guidance Program will help you choose the right path based on your interests!`
+      },
+      'about company': {
+        question: /about codecrest|company|who are you|about us/i,
+        response: `CodeCrest Hub is a technology learning and growth hub dedicated to bridging the gap between learning and real-world application. We empower learners with practical skills and pathways into tech careers through:<br><br>
+        • Project-based learning approaches<br>
+        • Continuous mentorship from industry professionals<br>
+        • Community support and networking<br>
+        • Career pathways and placement assistance<br><br>
+        Our mission is to shape tech leaders through affordable, practical, and community-driven education.`
+      },
+      'courses': {
+        question: /courses|programs|what do you teach|offerings/i,
+        response: `We offer hands-on courses in:<br><br>
+        • <strong>Data Analysis</strong> - From spreadsheets to data storytelling<br>
+        • <strong>Web Development</strong> - Modern, responsive websites and apps<br>
+        • <strong>Cybersecurity</strong> - Fundamentals of system protection<br>
+        • <strong>Digital Marketing</strong> - Practical growth strategies<br>
+        • <strong>AI/ML</strong> - Applied machine learning projects<br><br>
+        All programs feature project-based learning and mentorship. Check our Programs section for launch dates!`
+      },
+      'pricing': {
+        question: /price|cost|affordable|fee|how much/i,
+        response: `We believe in accessible education. Our pricing model includes:<br><br>
+        • <strong>Career Guidance Program:</strong> Affordable session-based pricing<br>
+        • <strong>Main Courses:</strong> Competitive rates with flexible payment options<br>
+        • <strong>Scholarships:</strong> Available for eligible candidates<br>
+        • <strong>Community Access:</strong> Free resources and networking<br><br>
+        Specific pricing details are shared when programs launch. Join our WhatsApp group for early bird offers!`
+      },
+      'default': {
+        response: `I'm here to help! I can answer questions about:<br><br>
+        • Career Guidance Program details<br>
+        • Course information and schedules<br>
+        • Registration processes<br>
+        • Tech career advice<br>
+        • Company information<br><br>
+        Try asking one of the suggested questions or type your specific query!`
+      }
+    };
+    
+    // Toggle widget
+    function toggleWidget() {
+      isWidgetOpen = !isWidgetOpen;
+      aiContainer.classList.toggle('active', isWidgetOpen);
+      aiToggle.setAttribute('aria-expanded', isWidgetOpen);
+      
+      if (isWidgetOpen) {
+        // Reset notification when opened
+        unreadMessages = 0;
+        updateNotification();
+        // Focus input when opened
+        setTimeout(() => aiInput.focus(), 300);
+      }
+    }
+    
+    // Update notification badge
+    function updateNotification() {
+      if (unreadMessages > 0) {
+        aiNotification.textContent = unreadMessages;
+        aiNotification.style.display = 'flex';
+        aiToggle.style.animation = 'pulse 2s infinite';
+      } else {
+        aiNotification.style.display = 'none';
+        aiToggle.style.animation = 'none';
+      }
+    }
+    
+    // Add message to chat
+    function addMessage(content, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `ai-widget-message ${isUser ? 'user-message' : 'ai-message'}`;
+      
+      const messageContent = document.createElement('div');
+      messageContent.className = 'message-content';
+      messageContent.innerHTML = `<p>${content}</p>`;
+      
+      messageDiv.appendChild(messageContent);
+      aiMessages.appendChild(messageDiv);
+      
+      // Scroll to bottom
+      aiMessages.scrollTop = aiMessages.scrollHeight;
+      
+      // Add notification if widget is closed
+      if (!isWidgetOpen && !isUser) {
+        unreadMessages++;
+        updateNotification();
+      }
+    }
+    
+    // Get AI response
+    function getAIResponse(question) {
+      question = question.toLowerCase().trim();
+      
+      // Check for matches
+      for (const key in aiResponses) {
+        if (key !== 'default' && aiResponses[key].question.test(question)) {
+          return aiResponses[key].response;
+        }
+      }
+      
+      // Default response
+      return aiResponses.default.response;
+    }
+    
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'ai-widget-message ai-message typing-indicator';
+      typingDiv.innerHTML = `
+        <div class="message-content">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      `;
+      aiMessages.appendChild(typingDiv);
+      aiMessages.scrollTop = aiMessages.scrollHeight;
+      return typingDiv;
+    }
+    
+    // Handle send message
+    function sendMessage() {
+      const question = aiInput.value.trim();
+      
+      if (!question) {
+        aiInput.focus();
+        return;
+      }
+      
+      // Add user message
+      addMessage(question, true);
+      
+      // Clear input
+      aiInput.value = '';
+      aiInput.style.height = 'auto';
+      
+      // Show typing indicator
+      const typingIndicator = showTypingIndicator();
+      
+      // Simulate AI thinking delay
+      setTimeout(() => {
+        // Remove typing indicator
+        typingIndicator.remove();
+        
+        // Get and add AI response
+        const response = getAIResponse(question);
+        addMessage(response);
+      }, 800 + Math.random() * 800);
+    }
+    
+    // Event listeners
+    aiToggle.addEventListener('click', toggleWidget);
+    aiClose.addEventListener('click', () => {
+      isWidgetOpen = false;
+      aiContainer.classList.remove('active');
+      aiToggle.setAttribute('aria-expanded', 'false');
+    });
+    
+    aiSend.addEventListener('click', sendMessage);
+    
+    aiInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    
+    // Auto-resize textarea
+    aiInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+    
+    // Quick questions
+    quickQuestions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const question = btn.getAttribute('data-question');
+        aiInput.value = question;
+        aiInput.focus();
+        aiInput.style.height = Math.min(aiInput.scrollHeight, 100) + 'px';
+        
+        // If widget is closed, open it
+        if (!isWidgetOpen) {
+          toggleWidget();
+        }
+      });
+    });
+    
+    // Close widget when clicking outside
+    document.addEventListener('click', (e) => {
+      if (isWidgetOpen && 
+          !aiContainer.contains(e.target) && 
+          !aiToggle.contains(e.target)) {
+        toggleWidget();
+      }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (isWidgetOpen && e.key === 'Escape') {
+        toggleWidget();
+      }
+    });
+    
+    // Auto-open on page load after 5 seconds
+    setTimeout(() => {
+      if (!isWidgetOpen) {
+        unreadMessages = 1;
+        updateNotification();
+      }
+    }, 5000);
+    
+    // Make widget draggable on desktop
+    let isDragging = false;
+    let startX, startY, initialX, initialY;
+    
+    // Only enable dragging on desktop
+    if (window.innerWidth > 768) {
+      aiToggle.addEventListener('mousedown', startDrag);
+      
+      function startDrag(e) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialX = aiToggle.offsetLeft;
+        initialY = aiToggle.offsetTop;
+        
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+      }
+      
+      function drag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        
+        aiToggle.style.left = `${initialX + dx}px`;
+        aiToggle.style.top = `${initialY + dy}px`;
+        aiToggle.style.position = 'fixed';
+        aiToggle.style.right = 'auto';
+        aiToggle.style.bottom = 'auto';
+      }
+      
+      function stopDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        
+        // Snap to edges after 1 second
+        setTimeout(snapToEdge, 1000);
+      }
+      
+      function snapToEdge() {
+        const toggleRect = aiToggle.getBoundingClientRect();
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // Reset to original position if near it
+        if (Math.abs(toggleRect.right - (windowWidth - 30)) < 50 && 
+            Math.abs(toggleRect.bottom - (windowHeight - 30)) < 50) {
+          resetPosition();
+          return;
+        }
+        
+        // Snap to nearest edge
+        const leftDistance = toggleRect.left;
+        const rightDistance = windowWidth - toggleRect.right;
+        const topDistance = toggleRect.top;
+        const bottomDistance = windowHeight - toggleRect.bottom;
+        
+        const minDistance = Math.min(leftDistance, rightDistance, topDistance, bottomDistance);
+        
+        aiToggle.style.transition = 'all 0.3s ease';
+        
+        if (minDistance === leftDistance) {
+          // Snap to left
+          aiToggle.style.left = '30px';
+          aiToggle.style.top = `${toggleRect.top}px`;
+          aiToggle.style.right = 'auto';
+          aiToggle.style.bottom = 'auto';
+        } else if (minDistance === rightDistance) {
+          // Snap to right
+          aiToggle.style.left = 'auto';
+          aiToggle.style.right = '30px';
+          aiToggle.style.top = `${toggleRect.top}px`;
+          aiToggle.style.bottom = 'auto';
+        } else if (minDistance === topDistance) {
+          // Snap to top
+          aiToggle.style.left = `${toggleRect.left}px`;
+          aiToggle.style.top = '30px';
+          aiToggle.style.right = 'auto';
+          aiToggle.style.bottom = 'auto';
+        } else {
+          // Snap to bottom
+          aiToggle.style.left = `${toggleRect.left}px`;
+          aiToggle.style.top = 'auto';
+          aiToggle.style.right = 'auto';
+          aiToggle.style.bottom = '30px';
+        }
+        
+        setTimeout(() => {
+          aiToggle.style.transition = '';
+        }, 300);
+      }
+      
+      function resetPosition() {
+        aiToggle.style.transition = 'all 0.3s ease';
+        aiToggle.style.left = '';
+        aiToggle.style.top = '';
+        aiToggle.style.right = '30px';
+        aiToggle.style.bottom = '30px';
+        
+        setTimeout(() => {
+          aiToggle.style.transition = '';
+        }, 300);
+      }
+    }
+  }
   
   /**
    * Utility: Debounce function for performance
@@ -458,20 +934,6 @@
     };
   }
   
-  /**
-   * Utility: Throttle function for performance
-   */
-  function throttle(func, limit) {
-    let inThrottle;
-    return function(...args) {
-      if (!inThrottle) {
-        func.apply(this, args);
-        inThrottle = true;
-        setTimeout(() => inThrottle = false, limit);
-      }
-    };
-  }
-  
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -482,6 +944,8 @@
   // Make functions available globally if needed
   window.CodeCrestHub = {
     openProgramModal: window.openProgramModal,
-    closeModal: window.closeModal
+    closeModal: window.closeModal,
+    openCareerModal: window.openCareerModal,
+    closeCareerModal: window.closeCareerModal
   };
 })();
