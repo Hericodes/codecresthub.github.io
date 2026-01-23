@@ -5,15 +5,23 @@
   /* Colors */
   --bg: #F7F3E9;              /* Soft cream background */
   --card: #FFFFFF;            /* White cards */
-  --muted: #5A5A5A;           /* Improved contrast grey text */
+  --muted: #4A4A4A;           /* Improved contrast grey text */
   --text: #1A1A1A;            /* Darker text for better contrast */
   --border: #E8E1D2;          /* Soft border */
   --gold: linear-gradient(90deg, #C89B3C, #D4AF37); /* Improved gold gradient */
   --accent: #C89B3C;          /* Darker gold for better contrast */
-  --dark-bg: #2B2B2B;         /* Actual dark background */
+  --dark-bg: #1A1A1A;         /* Darker background for better contrast */
   --dark-text: #F7F3E9;       /* Light text on dark */
   --shadow: 0 6px 20px rgba(0,0,0,0.08);
   --shadow-hover: 0 10px 30px rgba(0,0,0,0.12);
+  
+  /* AI Chat Colors */
+  --ai-primary: #6c5ce7;
+  --ai-secondary: #3498db;
+  --ai-gradient: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+  --whatsapp-green: #25D366;
+  --error-red: #ff4757;
+  --success-green: #2ecc71;
   
   /* Layout */
   --max-width: 1100px;
@@ -42,6 +50,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
   scroll-behavior: smooth;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Accessibility: Reduced motion */
@@ -53,6 +62,13 @@ html, body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .hero-card,
+  .reveal,
+  .card-anim {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -80,6 +96,16 @@ html, body {
   padding: 0 20px;
 }
 
+/* Focus styles for accessibility */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ---------------------------------------------------
    HEADER
 --------------------------------------------------- */
@@ -91,6 +117,12 @@ html, body {
   background: rgba(247, 243, 233, 0.95);
   border-bottom: 1px solid var(--border);
   transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    backdrop-filter: blur(5px); /* Reduce blur on mobile for performance */
+  }
 }
 
 .header-inner {
@@ -353,6 +385,7 @@ html, body {
   min-height: 56px;
   cursor: pointer;
   text-align: center;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 .btn:focus {
@@ -364,6 +397,8 @@ html, body {
   background: var(--gold);
   color: #1A1A1A;
   font-weight: 800;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn.primary:hover,
@@ -394,7 +429,7 @@ html, body {
   border-radius: 20px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-hover);
-  animation: float 6s ease-in-out infinite;
+  animation: floatEnhanced 6s ease-in-out infinite;
   position: relative;
   overflow: hidden;
 }
@@ -409,9 +444,14 @@ html, body {
   background: var(--gold);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0.5deg); }
-  50% { transform: translateY(-10px) rotate(-0.5deg); }
+@keyframes floatEnhanced {
+  0%, 100% { 
+    transform: translateY(0) rotate(0.5deg) scale(1);
+  }
+  50% { 
+    transform: translateY(-15px) rotate(-0.5deg) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .card-top {
@@ -650,9 +690,6 @@ h3 {
 /* ---------------------------------------------------
    PROGRAMS
 --------------------------------------------------- */
-/* ---------------------------------------------------
-   PROGRAMS SECTION (MISSING STYLES)
---------------------------------------------------- */
 .programs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -670,6 +707,7 @@ h3 {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 .program-card::before {
@@ -787,14 +825,14 @@ h3 {
 }
 
 .program-card.special:hover {
-  border-color: #25D366;
+  border-color: var(--whatsapp-green);
   background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(37, 211, 102, 0.05));
   transform: translateY(-8px);
 }
 
 .program-status.waitlist {
   background: rgba(37, 211, 102, 0.15);
-  color: #25D366;
+  color: var(--whatsapp-green);
   border: 1px solid rgba(37, 211, 102, 0.3);
   display: inline-flex;
   align-items: center;
@@ -816,7 +854,7 @@ h3 {
   color: inherit;
 }
 
-/* Add to the existing dark theme section */
+/* Dark theme adjustments */
 .dark .program-card.special {
   background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(43, 43, 43, 0.9));
   color: var(--dark-text);
@@ -832,7 +870,7 @@ h3 {
 }
 
 .dark .program-status.waitlist {
-  color: #25D366;
+  color: var(--whatsapp-green);
   background: rgba(37, 211, 102, 0.15);
 }
 
@@ -845,6 +883,7 @@ h3 {
   margin-top: 20px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) transparent;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .timeline-wrap::-webkit-scrollbar {
@@ -1029,6 +1068,8 @@ h3 {
   position: relative;
   transform: translateY(20px);
   transition: transform 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal.active .modal-content {
@@ -1110,163 +1151,8 @@ h3 {
 }
 
 /* ---------------------------------------------------
-   RESPONSIVE DESIGN
---------------------------------------------------- */
-@media (max-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  
-  .hero-card {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  .section-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  
-  .edge-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 880px) {
-  .nav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    height: 100vh;
-    width: 300px;
-    background: var(--bg);
-    flex-direction: column;
-    padding: 100px 32px 32px;
-    gap: 16px;
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 99;
-    border-left: 1px solid var(--border);
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav.nav--mobile-open {
-    right: 0;
-  }
-  
-  .nav a {
-    width: 100%;
-    text-align: center;
-    padding: 16px;
-    font-size: 18px;
-  }
-  
-  .nav-close {
-    display: block;
-  }
-  
-  .nav-toggle {
-    display: flex;
-  }
-  
-  .hero {
-    padding: 80px 0 60px;
-  }
-  
-  .hero-ctas {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .hero-ctas .btn {
-    width: 100%;
-    margin: 0 0 12px;
-  }
-  
-  .edge-grid,
-  .programs-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .problems-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0 16px;
-  }
-  
-  .section {
-    padding: 60px 0;
-  }
-  
-  .hero-copy h2 {
-    font-size: 32px;
-  }
-  
-  .lead {
-    font-size: 18px;
-  }
-  
-  .problems-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .contact-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .footer-flex {
-    flex-direction: column;
-    text-align: center;
-    gap: 16px;
-  }
-  
-  .footer-socials {
-    justify-content: center;
-  }
-  
-  .modal-content {
-    padding: 32px 24px;
-  }
-  
-  .modal-actions {
-    flex-direction: column;
-  }
-  
-  .modal-actions .btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .brand-text h1 {
-    font-size: 18px;
-  }
-  
-  .tagline {
-    font-size: 11px;
-  }
-  
-  .hero {
-    padding: 60px 0 40px;
-  }
-  
-  .card-top {
-    grid-template-columns: 1fr;
-  }
-  
-  .contact-socials a {
-    flex: 1;
-    min-width: 0;
-  }
-}
-/* ==========================================================================
    CAREER GUIDANCE SECTION
-   ========================================================================== */
+--------------------------------------------------- */
 
 .highlight-section {
   background: linear-gradient(135deg, rgba(200, 155, 60, 0.05) 0%, rgba(247, 243, 233, 0.8) 100%);
@@ -1343,13 +1229,6 @@ h3 {
   align-items: start;
   position: relative;
   z-index: 1;
-}
-
-@media (max-width: 880px) {
-  .career-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
 }
 
 .career-card {
@@ -1530,52 +1409,12 @@ h3 {
   font-weight: 800;
 }
 
-/* Dark theme adjustments for Career Section */
-.dark .highlight-section {
-  background: linear-gradient(135deg, rgba(200, 155, 60, 0.1) 0%, rgba(43, 43, 43, 0.9) 100%);
-  border-color: rgba(200, 155, 60, 0.3);
-}
-
-.dark .career-card,
-.dark .career-benefits {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .career-card:hover,
-.dark .career-benefits:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent);
-}
-
-.dark .program-details {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .detail-item {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .detail-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.dark .benefits-list li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.dark .benefits-list li:hover {
-  color: var(--accent);
-}
-
-/* ==========================================================================
+/* ---------------------------------------------------
    AI CUSTOMER CARE SECTION
-   ========================================================================== */
+--------------------------------------------------- */
 
 .badge-ai {
-  background: linear-gradient(90deg, #6c5ce7, #3498db);
+  background: var(--ai-gradient);
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 25px;
@@ -1602,7 +1441,7 @@ h3 {
 }
 
 .ai-header h3 i {
-  color: #6c5ce7;
+  color: var(--ai-primary);
 }
 
 .ai-container {
@@ -1610,13 +1449,6 @@ h3 {
   grid-template-columns: 1fr 1.5fr;
   gap: 3rem;
   align-items: start;
-}
-
-@media (max-width: 1024px) {
-  .ai-container {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
 }
 
 .ai-info-card {
@@ -1667,7 +1499,7 @@ h3 {
   content: '✓';
   position: absolute;
   left: 0;
-  color: #6c5ce7;
+  color: var(--ai-primary);
   font-weight: 800;
 }
 
@@ -1728,7 +1560,7 @@ h3 {
 .ai-avatar {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #6c5ce7, #3498db);
+  background: var(--ai-gradient);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1746,7 +1578,7 @@ h3 {
 }
 
 .status {
-  color: #2ecc71;
+  color: var(--success-green);
   font-size: 0.9rem;
   font-weight: 600;
   display: flex;
@@ -1758,11 +1590,11 @@ h3 {
 .status.online::before {
   content: '●';
   font-size: 1rem;
-  color: #2ecc71;
-  animation: pulse 2s infinite;
+  color: var(--success-green);
+  animation: statusPulse 2s infinite;
 }
 
-@keyframes pulse {
+@keyframes statusPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
@@ -1857,7 +1689,7 @@ h3 {
 
 .chat-input-area textarea:focus {
   outline: none;
-  border-color: #6c5ce7;
+  border-color: var(--ai-primary);
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
   background: rgba(255, 255, 255, 0.12);
 }
@@ -1891,177 +1723,9 @@ h3 {
 }
 
 .chat-disclaimer i {
-  color: #6c5ce7;
+  color: var(--ai-primary);
   font-size: 1rem;
   margin-top: 0.125rem;
-}
-
-/* Form styles for career modal */
-.form-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: inherit;
-  background: white;
-  color: var(--text);
-  transition: all 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.2);
-}
-
-.dark .form-group label {
-  color: var(--dark-text);
-}
-
-.dark .form-group input,
-.dark .form-group select {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: var(--dark-text);
-}
-
-.dark .form-group input:focus,
-.dark .form-group select:focus {
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* ==========================================================================
-   RESPONSIVE ADJUSTMENTS FOR NEW SECTIONS
-   ========================================================================== */
-
-@media (max-width: 768px) {
-  .highlight-section {
-    padding: 2.5rem 1.5rem;
-    margin: 3rem auto;
-  }
-  
-  .career-header h3 {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-  }
-  
-  .career-card,
-  .career-benefits {
-    padding: 2rem;
-  }
-  
-  .ai-container {
-    gap: 2rem;
-  }
-  
-  .ai-info-card,
-  .chat-container {
-    padding: 2rem;
-  }
-  
-  .chat-container {
-    height: 500px;
-  }
-  
-  .question-chips {
-    justify-content: center;
-  }
-  
-  .chip {
-    padding: 0.625rem 1rem;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .highlight-section {
-    padding: 2rem 1rem;
-  }
-  
-  .career-header .narrow {
-    font-size: 1rem;
-  }
-  
-  .career-card,
-  .career-benefits {
-    padding: 1.75rem 1.25rem;
-  }
-  
-  .career-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 2.5rem;
-  }
-  
-  .program-details {
-    padding: 1.25rem;
-  }
-  
-  .detail-item {
-    padding: 0.875rem;
-    gap: 0.75rem;
-  }
-  
-  .detail-item i {
-    font-size: 1.25rem;
-    min-width: 35px;
-  }
-  
-  .ai-info-card,
-  .chat-container {
-    padding: 1.5rem;
-  }
-  
-  .chat-header {
-    padding: 1.25rem;
-  }
-  
-  .ai-avatar {
-    width: 45px;
-    height: 45px;
-    font-size: 1.25rem;
-  }
-  
-  .chat-messages {
-    padding: 1.25rem;
-  }
-  
-  .message-content {
-    padding: 0.875rem 1rem;
-    font-size: 0.95rem;
-  }
-  
-  .chat-input-area {
-    padding: 1.25rem;
-  }
-  
-  .chat-input-area textarea {
-    padding: 0.875rem 1rem;
-    font-size: 0.95rem;
-  }
-  
-  .input-actions .btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
-  }
 }
 
 /* ---------------------------------------------------
@@ -2110,28 +1774,6 @@ h3 {
   box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.2);
 }
 
-/* Dark theme for modal */
-.dark .modal-body p {
-  color: rgba(247, 243, 233, 0.8);
-}
-
-.dark .modal-body label {
-  color: var(--dark-text);
-}
-
-.dark .modal-body input,
-.dark .modal-body select {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: var(--dark-text);
-}
-
-.dark .modal-body input:focus,
-.dark .modal-body select:focus {
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.1);
-}
-
 /* ---------------------------------------------------
    ENHANCED EFFECTS & ANIMATIONS
 --------------------------------------------------- */
@@ -2149,8 +1791,8 @@ h3 {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Pulse animation for call-to-action buttons */
-@keyframes pulse {
+/* Pulse shadow animation for buttons */
+@keyframes pulseShadow {
   0% {
     box-shadow: 0 0 0 0 rgba(200, 155, 60, 0.4);
   }
@@ -2162,13 +1804,8 @@ h3 {
   }
 }
 
-.btn.primary {
-  position: relative;
-  overflow: hidden;
-}
-
 .btn.primary:hover {
-  animation: pulse 2s infinite;
+  animation: pulseShadow 2s infinite;
 }
 
 /* Shimmer effect for cards */
@@ -2197,21 +1834,6 @@ h3 {
   transform: rotate(30deg) translate(10%, 10%);
 }
 
-/* Floating animation for hero card with enhanced effect */
-@keyframes floatEnhanced {
-  0%, 100% { 
-    transform: translateY(0) rotate(0.5deg) scale(1);
-  }
-  50% { 
-    transform: translateY(-15px) rotate(-0.5deg) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.hero-card {
-  animation: floatEnhanced 6s ease-in-out infinite;
-}
-
 /* Typing indicator for AI chat */
 .typing {
   display: inline-flex;
@@ -2223,7 +1845,7 @@ h3 {
   height: 8px;
   background: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  animation: typing 1.4s infinite ease-in-out;
+  animation: typingAnimation 1.4s infinite ease-in-out;
 }
 
 .typing span:nth-child(1) {
@@ -2234,7 +1856,7 @@ h3 {
   animation-delay: -0.16s;
 }
 
-@keyframes typing {
+@keyframes typingAnimation {
   0%, 80%, 100% {
     transform: scale(0);
     opacity: 0.5;
@@ -2243,11 +1865,6 @@ h3 {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
 }
 
 /* Gradient text effect for headings */
@@ -2332,10 +1949,9 @@ main {
   background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
 }
 
-/* ==========================================================================
+/* ---------------------------------------------------
    FLOATING AI CHAT WIDGET
-   ========================================================================== */
-
+--------------------------------------------------- */
 .ai-widget {
   position: fixed;
   bottom: 30px;
@@ -2349,7 +1965,7 @@ main {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6c5ce7, #3498db);
+  background: var(--ai-gradient);
   border: none;
   color: white;
   font-size: 24px;
@@ -2376,7 +1992,7 @@ main {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: #ff4757;
+  background: var(--error-red);
   color: white;
   font-size: 12px;
   font-weight: 700;
@@ -2386,7 +2002,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: pulse 2s infinite;
+  animation: pulseShadow 2s infinite;
 }
 
 /* Widget Container */
@@ -2415,7 +2031,7 @@ main {
 
 /* Widget Header */
 .ai-widget-header {
-  background: linear-gradient(135deg, #6c5ce7, #3498db);
+  background: var(--ai-gradient);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -2454,7 +2070,7 @@ main {
 
 .ai-widget-status::before {
   content: '●';
-  color: #2ecc71;
+  color: var(--success-green);
   font-size: 10px;
 }
 
@@ -2496,7 +2112,7 @@ main {
 }
 
 .ai-widget-messages::-webkit-scrollbar-thumb {
-  background: #6c5ce7;
+  background: var(--ai-primary);
   border-radius: 3px;
 }
 
@@ -2532,7 +2148,7 @@ main {
 }
 
 .ai-widget-message.user-message .message-content {
-  background: #6c5ce7;
+  background: var(--ai-primary);
   color: white;
   border-top-right-radius: 5px;
   margin-left: auto;
@@ -2563,7 +2179,7 @@ main {
 
 .ai-widget-input textarea:focus {
   outline: none;
-  border-color: #6c5ce7;
+  border-color: var(--ai-primary);
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
 }
 
@@ -2571,7 +2187,7 @@ main {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6c5ce7, #3498db);
+  background: var(--ai-gradient);
   border: none;
   color: white;
   cursor: pointer;
@@ -2605,16 +2221,16 @@ main {
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  color: #6c5ce7;
+  color: var(--ai-primary);
   cursor: pointer;
   transition: all 0.3s;
   white-space: nowrap;
 }
 
 .quick-question-btn:hover {
-  background: #6c5ce7;
+  background: var(--ai-primary);
   color: white;
-  border-color: #6c5ce7;
+  border-color: var(--ai-primary);
   transform: translateY(-2px);
 }
 
@@ -2628,7 +2244,7 @@ main {
 .typing-indicator span {
   width: 8px;
   height: 8px;
-  background: #6c5ce7;
+  background: var(--ai-primary);
   border-radius: 50%;
   opacity: 0.4;
   animation: typingBounce 1.4s infinite ease-in-out;
@@ -2676,7 +2292,7 @@ main {
   }
   
   .ai-widget-input textarea:focus {
-    border-color: #6c5ce7;
+    border-color: var(--ai-primary);
   }
   
   .ai-widget-message.ai-message .message-content {
@@ -2697,14 +2313,208 @@ main {
   }
   
   .quick-question-btn:hover {
-    background: #6c5ce7;
+    background: var(--ai-primary);
     color: white;
-    border-color: #6c5ce7;
+    border-color: var(--ai-primary);
   }
 }
 
-/* Responsive Design */
+/* ---------------------------------------------------
+   DARK THEME ADJUSTMENTS
+--------------------------------------------------- */
+.dark .highlight-section {
+  background: linear-gradient(135deg, rgba(200, 155, 60, 0.1) 0%, rgba(43, 43, 43, 0.9) 100%);
+  border-color: rgba(200, 155, 60, 0.3);
+}
+
+.dark .career-card,
+.dark .career-benefits {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .career-card:hover,
+.dark .career-benefits:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+}
+
+.dark .program-details {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .detail-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .detail-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dark .benefits-list li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark .benefits-list li:hover {
+  color: var(--accent);
+}
+
+.dark .modal-body p {
+  color: rgba(247, 243, 233, 0.8);
+}
+
+.dark .modal-body label {
+  color: var(--dark-text);
+}
+
+.dark .modal-body input,
+.dark .modal-body select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--dark-text);
+}
+
+.dark .modal-body input:focus,
+.dark .modal-body select:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------------------------------------------------
+   RESPONSIVE DESIGN
+--------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  
+  .hero-card {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .section-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .edge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ai-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 880px) {
+  .nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 300px;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 100px 32px 32px;
+    gap: 16px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 99;
+    border-left: 1px solid var(--border);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav.nav--mobile-open {
+    right: 0;
+  }
+  
+  .nav a {
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    font-size: 18px;
+  }
+  
+  .nav-close {
+    display: block;
+  }
+  
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .hero {
+    padding: 80px 0 60px;
+  }
+  
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .hero-ctas .btn {
+    width: 100%;
+    margin: 0 0 12px;
+  }
+  
+  .edge-grid,
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .problems-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .career-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  
+  .career-header h3 {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
+  .highlight-section {
+    padding: 2.5rem 1.5rem;
+    margin: 3rem auto;
+  }
+  
+  .career-card,
+  .career-benefits {
+    padding: 2rem;
+  }
+  
+  .ai-container {
+    gap: 2rem;
+  }
+  
+  .ai-info-card,
+  .chat-container {
+    padding: 2rem;
+  }
+  
+  .chat-container {
+    height: 500px;
+  }
+  
+  .question-chips {
+    justify-content: center;
+  }
+  
+  .chip {
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
+  }
+  
   .ai-widget {
     bottom: 20px;
     right: 20px;
@@ -2727,7 +2537,148 @@ main {
   }
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .section {
+    padding: 60px 0;
+  }
+  
+  .hero-copy h2 {
+    font-size: 32px;
+  }
+  
+  .lead {
+    font-size: 18px;
+  }
+  
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .footer-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .footer-socials {
+    justify-content: center;
+  }
+  
+  .modal-content {
+    padding: 32px 24px;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
+  .brand-text h1 {
+    font-size: 18px;
+  }
+  
+  .tagline {
+    font-size: 11px;
+  }
+  
+  .hero {
+    padding: 60px 0 40px;
+  }
+  
+  .card-top {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-socials a {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .highlight-section {
+    padding: 2rem 1rem;
+  }
+  
+  .career-header .narrow {
+    font-size: 1rem;
+  }
+  
+  .career-card,
+  .career-benefits {
+    padding: 1.75rem 1.25rem;
+  }
+  
+  .career-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+  }
+  
+  .program-details {
+    padding: 1.25rem;
+  }
+  
+  .detail-item {
+    padding: 0.875rem;
+    gap: 0.75rem;
+  }
+  
+  .detail-item i {
+    font-size: 1.25rem;
+    min-width: 35px;
+  }
+  
+  .ai-info-card,
+  .chat-container {
+    padding: 1.5rem;
+  }
+  
+  .chat-header {
+    padding: 1.25rem;
+  }
+  
+  .ai-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 1.25rem;
+  }
+  
+  .chat-messages {
+    padding: 1.25rem;
+  }
+  
+  .message-content {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .chat-input-area {
+    padding: 1.25rem;
+  }
+  
+  .chat-input-area textarea {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .input-actions .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
   .ai-widget {
     bottom: 15px;
     right: 15px;
@@ -2759,5 +2710,60 @@ main {
   
   .ai-widget-quick-questions {
     padding: 12px;
+  }
+}
+
+/* ---------------------------------------------------
+   PRINT STYLES
+--------------------------------------------------- */
+@media print {
+  .ai-widget,
+  .nav-toggle,
+  .hero-card,
+  .btn,
+  .modal,
+  .skip-link {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  .site-header {
+    position: static;
+    background: white !important;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .section {
+    padding: 20px 0 !important;
+    break-inside: avoid;
+  }
+  
+  .hero {
+    padding: 20px 0 !important;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+  
+  .program-card,
+  .edge-card,
+  .problem,
+  .career-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
   }
 }
