@@ -22,6 +22,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -43,6 +46,7 @@
 
       <nav class="nav" aria-label="Primary Navigation">
         <a href="#programs">Programs</a>
+        <a href="#career-guidance">Career Guidance</a>
         <a href="#edge">The Edge</a>
         <a href="#goals">Goals</a>
         <a href="#contact" class="btn-ghost">Contact</a>
@@ -66,7 +70,7 @@
           </p>
           <div class="hero-ctas reveal delay-2">
             <a class="btn primary" href="#programs">Explore Programs</a>
-            <a class="btn outline" href="#edge">Why CodeCrest?</a>
+            <a class="btn outline" href="#career-guidance">Career Guidance</a>
           </div>
         </div>
 
@@ -145,49 +149,110 @@
 
     <!-- PROGRAMS -->
     <section id="programs" class="section dark">
-    <div class="container">
+      <div class="container">
         <h3 class="center">Upcoming Programs</h3>
         <p class="center narrow">Hands-on courses launching soon. Join our community to stay updated!</p>
         <div class="programs-grid">
-        <div class="program-card" data-program="Data Analysis" data-status="coming-soon">
+          <div class="program-card" data-program="Data Analysis" data-status="coming-soon">
             <h4>Data Analysis</h4>
             <p>From spreadsheets to storytelling with data.</p>
             <span class="program-status coming-soon">Launching Q2 2026</span>
-        </div>
-        <div class="program-card" data-program="Web Development" data-status="coming-soon">
+          </div>
+          <div class="program-card" data-program="Web Development" data-status="coming-soon">
             <h4>Web Development</h4>
             <p>Build modern, responsive websites and apps.</p>
             <span class="program-status coming-soon">Launching Q2 2026</span>
-        </div>
-        <div class="program-card" data-program="Cybersecurity" data-status="coming-soon">
+          </div>
+          <div class="program-card" data-program="Cybersecurity" data-status="coming-soon">
             <h4>Cybersecurity</h4>
             <p>Fundamentals of protecting systems and networks.</p>
             <span class="program-status coming-soon">Launching Q3 2027</span>
-        </div>
-        <div class="program-card" data-program="Digital Marketing" data-status="coming-soon">
+          </div>
+          <div class="program-card" data-program="Digital Marketing" data-status="coming-soon">
             <h4>Digital Marketing</h4>
             <p>Practical growth strategies and analytics.</p>
             <span class="program-status coming-soon">Launching Q3 2027</span>
-        </div>
-        <div class="program-card" data-program="AI / ML" data-status="coming-soon">
+          </div>
+          <div class="program-card" data-program="AI / ML" data-status="coming-soon">
             <h4>AI / ML</h4>
             <p>Applied machine learning projects.</p>
             <span class="program-status coming-soon">Launching 2028</span>
+          </div>
+          <!-- Updated Waitlist Card - Now a direct link to WhatsApp -->
+          <a href="https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6" class="program-card special waitlist-link" 
+              target="_blank" rel="noopener noreferrer" 
+              aria-label="Join our WhatsApp community group">
+              <div class="card-content">
+                <h4>Join Our Community</h4>
+                <p>Connect with other learners, get updates, and join discussions in our WhatsApp group.</p>
+                <span class="program-status waitlist">
+                  <span class="whatsapp-icon">📱</span> Join WhatsApp Group
+                </span>
+              </div>
+          </a>
         </div>
-        <!-- Updated Waitlist Card - Now a direct link to WhatsApp -->
-        <a href="https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6" class="program-card special waitlist-link" 
-            target="_blank" rel="noopener noreferrer" 
-            aria-label="Join our WhatsApp community group">
-            <div class="card-content">
-            <h4>Join Our Community</h4>
-            <p>Connect with other learners, get updates, and join discussions in our WhatsApp group.</p>
-            <span class="program-status waitlist">
-                <span class="whatsapp-icon">📱</span> Join WhatsApp Group
-            </span>
+      </div>
+    </section>
+
+    <!-- CAREER GUIDANCE PROGRAM -->
+    <section id="career-guidance" class="section container highlight-section">
+      <div class="career-header">
+        <h3 class="center">
+          <i class="fas fa-rocket"></i> Career Guidance Program
+          <span class="badge-new">Launching Next Month!</span>
+        </h3>
+        <p class="center narrow">A 1-hour intensive empowerment session to navigate the tech space and build essential skills.</p>
+      </div>
+      
+      <div class="career-grid">
+        <div class="career-card">
+          <div class="career-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h4>Tech Career Empowerment</h4>
+          <p>Enlightening the public about tech skills and navigation strategies through the entire tech ecosystem.</p>
+          
+          <div class="program-details">
+            <div class="detail-item">
+              <i class="fas fa-users"></i>
+              <div>
+                <strong>Limited Capacity</strong>
+                <p>Maximum 20 individuals per session</p>
+              </div>
             </div>
-        </a>
+            <div class="detail-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <strong>Duration</strong>
+                <p>1-hour intensive guidance session</p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-calendar-alt"></i>
+              <div>
+                <strong>Starting</strong>
+                <p>Next month - Register your interest now!</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn primary career-btn" id="registerCareerBtn">
+            <i class="fas fa-user-plus"></i> Register Interest
+          </button>
         </div>
-    </div>
+        
+        <div class="career-benefits">
+          <h4>What You'll Gain:</h4>
+          <ul class="benefits-list">
+            <li><i class="fas fa-check-circle"></i> <strong>Tech Skills Insight:</strong> Understanding of in-demand technical skills</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Career Navigation:</strong> Strategies to navigate the tech industry landscape</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Pathway Guidance:</strong> Clear career paths and progression opportunities</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Networking:</strong> Connect with fellow tech enthusiasts</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Resource Toolkit:</strong> Curated learning resources and tools</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Industry Insights:</strong> Current trends and future opportunities in tech</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- GOALS -->
@@ -245,21 +310,126 @@
   </footer>
 
   <!-- MODAL -->
-<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="Close modal">&times;</button>
-    <h3 id="modal-title">Program Details</h3>
-    <div id="modal-desc">
-      <p>Loading program information...</p>
-    </div>
-    <div class="modal-actions">
-      <button id="close-modal" class="btn outline">Close</button>
-      <a id="whatsapp-link" href="https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6" target="_blank" rel="noopener noreferrer" class="btn primary" style="text-decoration: none;">
-        Join WhatsApp Group
-      </a>
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="modal-title">Program Details</h3>
+      <div class="modal-body">
+        <div id="modal-desc">
+          <p>Loading program information...</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="close-modal" class="btn outline">Close</button>
+        <a id="whatsapp-link" href="https://chat.whatsapp.com/CmUJec2yU4QFihAx3Dmea6" target="_blank" rel="noopener noreferrer" class="btn primary" style="text-decoration: none;">
+          Join WhatsApp Group
+        </a>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- CAREER GUIDANCE MODAL -->
+  <div id="careerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="career-modal-title">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="career-modal-title">
+        <i class="fas fa-rocket"></i> Register for Career Guidance Program
+      </h3>
+      <div class="modal-body">
+        <p>Thank you for your interest in our Career Guidance Program! We'll contact you when registration opens next month.</p>
+        <form id="careerRegistrationForm">
+          <div class="form-group">
+            <label for="careerName">Full Name</label>
+            <input type="text" id="careerName" required>
+          </div>
+          <div class="form-group">
+            <label for="careerEmail">Email Address</label>
+            <input type="email" id="careerEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="careerInterest">Primary Tech Interest</label>
+            <select id="careerInterest" required>
+              <option value="">Select your interest</option>
+              <option value="web-dev">Web Development</option>
+              <option value="data-science">Data Science & Analysis</option>
+              <option value="cybersecurity">Cybersecurity</option>
+              <option value="ai-ml">AI & Machine Learning</option>
+              <option value="digital-marketing">Digital Marketing</option>
+              <option value="career-change">Career Change Guidance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="careerExperience">Current Experience Level</label>
+            <select id="careerExperience" required>
+              <option value="">Select your level</option>
+              <option value="beginner">Beginner (0-1 years)</option>
+              <option value="intermediate">Intermediate (1-3 years)</option>
+              <option value="advanced">Advanced (3+ years)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn primary">
+            <i class="fas fa-paper-plane"></i> Submit Interest
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING AI CHAT WIDGET -->
+  <div class="ai-widget">
+    <!-- Widget Toggle Button -->
+    <button class="ai-widget-toggle" id="aiWidgetToggle" aria-label="Open AI Assistant">
+      <i class="fas fa-robot"></i>
+      <span class="ai-notification" id="aiNotification">1</span>
+    </button>
+    
+    <!-- Chat Widget Container -->
+    <div class="ai-widget-container" id="aiWidgetContainer">
+      <div class="ai-widget-header">
+        <div class="ai-widget-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div>
+          <h4>CodeCrest AI Assistant</h4>
+          <p class="ai-widget-status">Online • Ready to help</p>
+        </div>
+        <button class="ai-widget-close" id="aiWidgetClose" aria-label="Close chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="ai-widget-messages" id="aiWidgetMessages">
+        <div class="ai-widget-message ai-message">
+          <div class="message-content">
+            <p>Hi there! 👋 I'm your AI assistant. Ask me about our programs, career guidance, or anything about CodeCrest Hub!</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ai-widget-input">
+        <textarea 
+          id="aiWidgetInput" 
+          placeholder="Type your question here..."
+          rows="2"
+        ></textarea>
+        <button id="aiWidgetSend" class="ai-widget-send-btn">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      
+      <div class="ai-widget-quick-questions">
+        <button class="quick-question-btn" data-question="What is the Career Guidance Program?">
+          Career Program
+        </button>
+        <button class="quick-question-btn" data-question="How do I register?">
+          Registration
+        </button>
+        <button class="quick-question-btn" data-question="What courses do you offer?">
+          Courses
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
